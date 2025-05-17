@@ -1,37 +1,75 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+
+const API_URL = "http://localhost:5000/tasks"; // adjust if needed
 
 function App() {
-  const [tasks, setTasks] = useState([
-    // Sample starting tasks
-    { id: 1, text: "Learn React", done: false },
-    { id: 2, text: "Set up backend", done: false },
-  ]);
+  const [tasks, setTasks] = useState([]);
   const [newTask, setNewTask] = useState("");
 
-  // Add new task
-  const addTask = () => {
-    if (!newTask.trim()) return;
-    const task = {
-      id: Date.now(),
-      text: newTask.trim(),
-      done: false,
+  useEffect(() => {
+    const fetchTasks=async()=>{
+      const res=await fetch("http://localhost:5000/tasks");
+      const data=await res.json();
+      setTasks(data);
     };
-    setTasks((prev) => [...prev, task]);
-    setNewTask("");
+    fetchTasks();
+  }, []);
+
+  // const fetchTasks = async () => {
+  //   try {
+  //     const res = await fetch(API_URL);
+  //     const data = await res.json();
+  //     setTasks(data);
+  //   } catch (err) {
+  //     console.error("Error fetching tasks:", err);
+  //   }
+  // };
+
+  const addTask = async () => {
+    if (!newTask.trim()) return;
+
+    try {
+      const res = await fetch("http://localhost:5000/tasks", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ text: newTask.trim() }),
+      });
+
+      const data = await res.json();
+      setTasks((prev) => [...prev, data]);
+      setNewTask("");
+    } catch (err) {
+      console.error("Error adding task:", err);
+    }
   };
 
-  // Toggle task done
-  const toggleDone = (id) => {
-    setTasks((prev) =>
-      prev.map((task) =>
-        task.id === id ? { ...task, done: !task.done } : task
-      )
-    );
+  const toggleDone = async (id) => {
+    try {
+      const res = await fetch(`${API_URL}/${id}`, {
+        method: "PUT",
+      });
+
+      const updatedTask = await res.json();
+      setTasks((prev) =>
+        prev.map((task) => (task._id === id ? updatedTask : task))
+      );
+    } catch (err) {
+      console.error("Error toggling task:", err);
+    }
   };
 
-  // Delete task
-  const deleteTask = (id) => {
-    setTasks((prev) => prev.filter((task) => task.id !== id));
+  const deleteTask = async (id) => {
+    try {
+      await fetch(`${API_URL}/${id}`, {
+        method: "DELETE",
+      });
+
+      setTasks((prev) => prev.filter((task) => task._id !== id));
+    } catch (err) {
+      console.error("Error deleting task:", err);
+    }
   };
 
   return (
@@ -53,15 +91,15 @@ function App() {
 
       <ul style={styles.taskList}>
         {tasks.length === 0 && <li>No tasks yet!</li>}
-        {tasks.map(({ id, text, done }) => (
-          <li key={id} style={{ ...styles.task, textDecoration: done ? "line-through" : "none" }}>
+        {tasks.map(({ _id, text, done }) => (
+          <li key={_id} style={{ ...styles.task, textDecoration: done ? "line-through" : "none" }}>
             <input
               type="checkbox"
               checked={done}
-              onChange={() => toggleDone(id)}
+              onChange={() => toggleDone(_id)}
             />
             <span style={{ marginLeft: 8 }}>{text}</span>
-            <button onClick={() => deleteTask(id)} style={styles.deleteBtn}>
+            <button onClick={() => deleteTask(_id)} style={styles.deleteBtn}>
               Delete
             </button>
           </li>
