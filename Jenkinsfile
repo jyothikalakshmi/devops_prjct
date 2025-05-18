@@ -38,9 +38,9 @@ pipeline {
         }
         }
        stage('Build Docker Image') {
-    steps {
-        bat 'docker build -t jyothika0706/myapp:latest .'
-    }
+    dir('backend') {
+    bat 'docker build -t jyothika0706/myapp:latest .'
+}
 }
         stage('Push Docker Image') {
             steps {
