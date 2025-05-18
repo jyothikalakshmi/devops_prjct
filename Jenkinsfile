@@ -12,8 +12,9 @@ pipeline {
         stage('Build and Deploy') {
             steps {
                 // Go to root folder, run docker commands
-                sh 'docker-compose down'
-                sh 'docker-compose up --build -d'
+                // sh 'docker-compose down'
+                // sh 'docker-compose up --build -d'
+                  bat 'echo Build and Deploy steps here'
             }
         }
     }
