@@ -30,7 +30,8 @@ pipeline {
         }
         stage('Build & Test') {
             steps {
-               dir('resilient_app') {
+               dir('devops_prjct/resilient_app') {
+                   bat 'dir'
                     bat 'npm install'
                     bat 'npm test'
                 }
