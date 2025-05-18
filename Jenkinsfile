@@ -30,18 +30,20 @@ pipeline {
         }
         stage('Build & Test') {
             steps {
-               dir('devops_prjct/resilient_app') {
-                   bat 'dir src'
+                dir('devops_prjct/resilient_app') {
+                    bat 'dir src'
                     bat 'npm install'
                     bat 'npm test -- --watchAll=false --passWithNoTests'
                 }
+            }
         }
+        stage('Build Docker Image') {
+            steps {
+                dir('backend') {
+                    bat 'docker build -t jyothika0706/myapp:latest .'
+                }
+            }
         }
-       stage('Build Docker Image') {
-    dir('backend') {
-    bat 'docker build -t jyothika0706/myapp:latest .'
-}
-}
         stage('Push Docker Image') {
             steps {
                 bat 'docker login -u jyothika0706 -p Chinni04@'
