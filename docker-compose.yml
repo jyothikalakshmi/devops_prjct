@@ -18,5 +18,14 @@ services:
     depends_on:
       - mongo
 
+  mongo-backup:
+    build: ./mongo-backup
+    container_name: mongo-backup
+    depends_on:
+      - mongo
+    volumes:
+      - mongo-backup-data:/backup
+
 volumes:
   mongo-data:
+  mongo-backup-data:
