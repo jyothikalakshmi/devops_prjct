@@ -35,6 +35,7 @@ pipeline {
                     bat 'npm test'
                 }
         }
+        }
         stage('Build Docker Image') {
             steps {
                 bat 'docker build -t jyothika0706/myapp:latest .'
@@ -48,4 +49,4 @@ pipeline {
         }
     }
 }
-}
+
