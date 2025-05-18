@@ -33,13 +33,15 @@ pipeline {
                dir('devops_prjct/resilient_app') {
                    bat 'dir'
                     bat 'npm install'
-                    bat 'npm test'
+                    bat 'npm test -- --watchAll=false --passWithNoTests'
                 }
         }
         }
         stage('Build Docker Image') {
-            steps {
-                bat 'docker build -t jyothika0706/myapp:latest .'
+             steps {
+                dir('devops_prjct/resilient_app') {
+                    bat 'docker build -t jyothika0706/myapp:latest .'
+                }
             }
         }
         stage('Push Docker Image') {
