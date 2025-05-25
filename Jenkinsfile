@@ -54,11 +54,12 @@ pipeline {
                 bat 'docker push jyothika0706/myapp:latest'
             }
         }
-    }
+    
     stage('Deploy to kubernetes'){
         steps{
             bat 'kubectl rollout restart deployment backend'
         }
+    }
     }
 }
 
