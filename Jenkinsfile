@@ -57,7 +57,7 @@ pipeline {
     
     stage('Deploy to kubernetes'){
         steps{
-             withEnv(['KUBECONFIG=C:/ProgramData/Jenkins/.kube/config']) {
+             withEnv(['KUBECONFIG=C:/Program Files/Jenkins/.kube/config']) {
             bat 'kubectl rollout restart deployment backend'
         }
     }
