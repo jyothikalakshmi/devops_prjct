@@ -26,6 +26,25 @@ services:
     volumes:
       - mongo-backup-data:/backup
 
+  frontend:
+    build:
+      context: ./devops_prjct/resilient_app
+      dockerfile: Dockerfile
+      args:
+      - REACT_APP_API_URL=http://backend:5000/tasks
+    container_name: task-frontend
+    
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./devops_prjct/resilient_app:/app
+      - /app/node_modules
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+    stdin_open: true
+    tty: true
+
+
 volumes:
   mongo-data:
   mongo-backup-data:

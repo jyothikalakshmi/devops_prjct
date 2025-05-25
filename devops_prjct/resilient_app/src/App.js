@@ -1,6 +1,11 @@
 import React, { useEffect, useState } from "react";
 
-const API_URL = "http://localhost:5000/tasks"; // adjust if needed
+// const API_URL = "http://localhost:5000/tasks"; 
+// const API_URL = "http://192.168.49.2:32639/tasks";
+const API_URL = process.env.REACT_APP_API_URL || "http://localhost:5000/tasks";
+
+
+
 
 function App() {
   const [tasks, setTasks] = useState([]);
@@ -8,7 +13,8 @@ function App() {
 
   useEffect(() => {
     const fetchTasks=async()=>{
-      const res=await fetch("http://localhost:5000/tasks");
+      const res=await fetch(API_URL);
+      // const res=await fetch(API_URL);
       const data=await res.json();
       setTasks(data);
     };
@@ -29,7 +35,7 @@ function App() {
     if (!newTask.trim()) return;
 
     try {
-      const res = await fetch("http://localhost:5000/tasks", {
+      const res = await fetch(API_URL, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

@@ -22,6 +22,10 @@
 
 pipeline {
     agent any
+
+    // environment{
+    //     DOCKER_IMAGE = 'jyothika0706/myapp:latest'
+    // }
     stages {
         stage('Checkout') {
             steps {
@@ -49,6 +53,11 @@ pipeline {
                 bat 'docker login -u jyothika0706 -p Chinni04@'
                 bat 'docker push jyothika0706/myapp:latest'
             }
+        }
+    }
+    stage('Deploy to kubernetes'){
+        steps{
+            bat 'kubectl rollout restart deployment backend'
         }
     }
 }

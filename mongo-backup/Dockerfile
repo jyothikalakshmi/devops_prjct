@@ -17,7 +17,11 @@ COPY backup.sh /usr/local/bin/backup.sh
 RUN chmod +x /usr/local/bin/backup.sh
 
 # Add cron job (every 5 minutes)
-RUN echo "*/5 * * * * root /usr/local/bin/backup.sh >> /var/log/cron.log 2>&1" > /etc/cron.d/mongo-backup
+# RUN echo "*/5 * * * * root /usr/local/bin/backup.sh >> /var/log/cron.log 2>&1" > /etc/cron.d/mongo-backup
+RUN echo "*/15 * * * * root /usr/local/bin/backup.sh >> /var/log/cron.log 2>&1" > /etc/cron.d/mongo-backup
+RUN chmod 0644 /etc/cron.d/mongo-backup
+# No crontab command here! Cron reads /etc/cron.d automatically.
+
 
 # Apply cron job and start cron
 RUN chmod 0644 /etc/cron.d/mongo-backup && \

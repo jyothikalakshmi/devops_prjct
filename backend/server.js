@@ -3,6 +3,9 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 const Task = require("./models/Task");
 
+// const mongoURL = process.env.MONGO_URL || "mongodb://localhost:27017/taskdb";
+// const mongoURL = process.env.MONGO_URL || "mongodb://mongo-service:27017/taskdb";
+
 const app = express();
 app.use(cors());
 app.use(express.json());
@@ -40,3 +43,4 @@ app.delete("/tasks/:id", async (req, res) => {
 });
 
 app.listen(5000, () => console.log("Backend running on port 5000"));
+// app.listen(5000, '0.0.0.0', () => console.log("Backend running on port 5000"));
