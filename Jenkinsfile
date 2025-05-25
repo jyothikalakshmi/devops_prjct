@@ -57,8 +57,10 @@ pipeline {
     
     stage('Deploy to kubernetes'){
         steps{
+             withEnv(['KUBECONFIG=C:/ProgramData/Jenkins/.kube/config']) {
             bat 'kubectl rollout restart deployment backend'
         }
+    }
     }
     }
 }
